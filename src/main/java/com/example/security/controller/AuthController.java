@@ -36,6 +36,9 @@ public class AuthController {
         return token;
     }
 
+        /*****************************************************
+     api  where requires username and passoword as request body
+         * ************************************************************/
     @PostMapping("/token")
     public String token(@RequestBody LoginRequest userLogin) {
      Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.getUsername(), userLogin.getPassword()));

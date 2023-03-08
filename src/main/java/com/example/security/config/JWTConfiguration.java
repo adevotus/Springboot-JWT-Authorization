@@ -49,7 +49,9 @@ public class JWTConfiguration {
     public UserDetailsService user() {
         return new InMemoryUserDetailsManager(User.withUsername("admin").password("{noop}password").authorities("read").build());
     }
+    /*********************************************************
 
+     * ***************************************************************/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 //        return httpSecurity.csrf(csrf -> csrf.disable())
@@ -60,11 +62,26 @@ public class JWTConfiguration {
 //                .build();
 
 
-        return httpSecurity.csrf(csrf -> csrf.disable()).authorizeRequests(auth -> auth.requestMatchers("/token").permitAll().anyRequest().authenticated()).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).exceptionHandling((ex) -> ex.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()).accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
+        return httpSecurity.csrf(csrf -> csrf.disable())
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/token")
+                        .permitAll().anyRequest()
+                        .authenticated())
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling((ex) -> ex
+                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+                        .accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
 
                 .build();
     }
 
+
+
+    /******************************************************
+     jwt token decoder and decoder
+     * ********************************************************/
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(rsaKeyProperties.publicKey()).build();
