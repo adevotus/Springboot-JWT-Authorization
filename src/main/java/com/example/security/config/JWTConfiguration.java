@@ -45,12 +45,15 @@ public class JWTConfiguration {
         return new ProviderManager(authProvider);
     }
 
+
+    /*********************************************************
+username and passowrd configuration for jwt token to create
+     * ***************************************************************/
     @Bean
     public UserDetailsService user() {
         return new InMemoryUserDetailsManager(User.withUsername("admin").password("{noop}password").authorities("read").build());
     }
     /*********************************************************
-
      * ***************************************************************/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
