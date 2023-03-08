@@ -1,6 +1,8 @@
 package com.example.security.controller;
 
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +13,15 @@ public class SecurityController {
 
 
     @RequestMapping("/home")
+
+
     public String home(Principal principal){
         return " Congradulation!! Now yo have access the  API   " + principal.getName();
+    }
+
+    @PreAuthorize("hasAuthority('SCOPE_read')")
+    @GetMapping("/secure")
+    public String secure(){
+        return "this is secure one";
     }
 }
